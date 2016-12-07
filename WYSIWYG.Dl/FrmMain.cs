@@ -234,19 +234,17 @@ namespace WYSIWYG.Dl
                     extension = link.Substring(link.LastIndexOf('.'));
                     switch (extension.ToUpper())
                     {
-                        case ".CSS":
-                            sourceCSS.Append(client.DownloadString(new Uri(_basicUri, link)));
-                            break;
-
                         case ".GIF":
                         case ".PNG":
                         case ".JPG":
                         case ".ICO":
+                        case ".SVG":
                         case ".JPEG":
                             list.Add(new Uri(_basicUri, link));
                             break;
-
+                        case ".CSS":
                         default:
+                            sourceCSS.Append(client.DownloadString(new Uri(_basicUri, link)));
                             break;
                     }
                 }
@@ -288,7 +286,7 @@ namespace WYSIWYG.Dl
             {
                 using (var client = new WebClient())
                 {
-                    client.Headers.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko ");
+                    client.Headers.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.18 Safari/537.36");
                     foreach (Uri uri in list)
                     {
                         string savePath = Path.Combine(saveDir, uri.AbsoluteUri.Substring(uri.AbsoluteUri.LastIndexOf('/') + 1));
