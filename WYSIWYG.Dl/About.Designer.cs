@@ -10,7 +10,7 @@
         /// <summary>
         /// 清理所有正在使用的资源。
         /// </summary>
-        /// <param name="disposing">如果应释放托管资源，为 true；否则为 false。</param>
+        /// <param name="disposing">如果应释放托管资源,为 true；否则为 false。</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -47,80 +47,81 @@
             // 
             this.lblCaption.AutoSize = true;
             this.lblCaption.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblCaption.Location = new System.Drawing.Point(25, 21);
+            this.lblCaption.Location = new System.Drawing.Point(29, 25);
             this.lblCaption.Name = "lblCaption";
             this.lblCaption.Size = new System.Drawing.Size(257, 20);
             this.lblCaption.TabIndex = 0;
-            this.lblCaption.Text = "CSS背景图片批量抓取下载 V0.1";
+            this.lblCaption.Text = "URL图片分析器 V0.1";
             // 
             // lblAuthor
             // 
             this.lblAuthor.AutoSize = true;
-            this.lblAuthor.Location = new System.Drawing.Point(29, 67);
+            this.lblAuthor.Location = new System.Drawing.Point(34, 83);
             this.lblAuthor.Name = "lblAuthor";
-            this.lblAuthor.Size = new System.Drawing.Size(102, 13);
+            this.lblAuthor.Size = new System.Drawing.Size(101, 16);
             this.lblAuthor.TabIndex = 1;
             this.lblAuthor.Text = "作者：    Ola Chan";
             // 
             // lblQQ
             // 
             this.lblQQ.AutoSize = true;
-            this.lblQQ.Location = new System.Drawing.Point(27, 91);
+            this.lblQQ.Location = new System.Drawing.Point(31, 112);
             this.lblQQ.Name = "lblQQ";
-            this.lblQQ.Size = new System.Drawing.Size(35, 13);
+            this.lblQQ.Size = new System.Drawing.Size(39, 16);
             this.lblQQ.TabIndex = 1;
             this.lblQQ.Text = "label2";
             // 
             // lblQQDesc
             // 
             this.lblQQDesc.AutoSize = true;
-            this.lblQQDesc.Location = new System.Drawing.Point(29, 91);
+            this.lblQQDesc.Location = new System.Drawing.Point(34, 112);
             this.lblQQDesc.Name = "lblQQDesc";
-            this.lblQQDesc.Size = new System.Drawing.Size(47, 13);
+            this.lblQQDesc.Size = new System.Drawing.Size(48, 16);
             this.lblQQDesc.TabIndex = 1;
             this.lblQQDesc.Text = "QQ号：";
             // 
             // lblMSN
             // 
             this.lblMSN.AutoSize = true;
-            this.lblMSN.Location = new System.Drawing.Point(29, 116);
+            this.lblMSN.Location = new System.Drawing.Point(34, 143);
             this.lblMSN.Name = "lblMSN";
-            this.lblMSN.Size = new System.Drawing.Size(43, 13);
+            this.lblMSN.Size = new System.Drawing.Size(45, 16);
             this.lblMSN.TabIndex = 1;
             this.lblMSN.Text = "MSN：";
             // 
             // lblMail
             // 
             this.lblMail.AutoSize = true;
-            this.lblMail.Location = new System.Drawing.Point(27, 144);
+            this.lblMail.Location = new System.Drawing.Point(31, 177);
             this.lblMail.Name = "lblMail";
-            this.lblMail.Size = new System.Drawing.Size(35, 13);
+            this.lblMail.Size = new System.Drawing.Size(39, 16);
             this.lblMail.TabIndex = 1;
             this.lblMail.Text = "label2";
             // 
             // lblEmail
             // 
             this.lblEmail.AutoSize = true;
-            this.lblEmail.Location = new System.Drawing.Point(29, 142);
+            this.lblEmail.Location = new System.Drawing.Point(34, 175);
             this.lblEmail.Name = "lblEmail";
-            this.lblEmail.Size = new System.Drawing.Size(145, 13);
+            this.lblEmail.Size = new System.Drawing.Size(156, 16);
             this.lblEmail.TabIndex = 1;
             this.lblEmail.Text = "邮箱：   olar.tan@gmail.com";
             // 
             // lblBlog
             // 
             this.lblBlog.AutoSize = true;
-            this.lblBlog.Location = new System.Drawing.Point(29, 168);
+            this.lblBlog.Location = new System.Drawing.Point(34, 207);
             this.lblBlog.Name = "lblBlog";
-            this.lblBlog.Size = new System.Drawing.Size(52, 13);
+            this.lblBlog.Size = new System.Drawing.Size(50, 16);
             this.lblBlog.TabIndex = 1;
             this.lblBlog.Text = "博客：   ";
             // 
             // btnYes
             // 
-            this.btnYes.Location = new System.Drawing.Point(104, 200);
+            this.btnYes.Location = new System.Drawing.Point(121, 247);
+            this.btnYes.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnYes.Name = "btnYes";
-            this.btnYes.Size = new System.Drawing.Size(75, 25);
+            this.btnYes.Size = new System.Drawing.Size(87, 31);
             this.btnYes.TabIndex = 2;
             this.btnYes.Text = "确定";
             this.btnYes.UseVisualStyleBackColor = true;
@@ -129,9 +130,9 @@
             // lnkBlog
             // 
             this.lnkBlog.AutoSize = true;
-            this.lnkBlog.Location = new System.Drawing.Point(77, 168);
+            this.lnkBlog.Location = new System.Drawing.Point(90, 207);
             this.lnkBlog.Name = "lnkBlog";
-            this.lnkBlog.Size = new System.Drawing.Size(138, 13);
+            this.lnkBlog.Size = new System.Drawing.Size(125, 16);
             this.lnkBlog.TabIndex = 3;
             this.lnkBlog.TabStop = true;
             this.lnkBlog.Text = "http://chenzheng.me/";
@@ -140,9 +141,9 @@
             // lnkQQ
             // 
             this.lnkQQ.AutoSize = true;
-            this.lnkQQ.Location = new System.Drawing.Point(77, 91);
+            this.lnkQQ.Location = new System.Drawing.Point(90, 112);
             this.lnkQQ.Name = "lnkQQ";
-            this.lnkQQ.Size = new System.Drawing.Size(61, 13);
+            this.lnkQQ.Size = new System.Drawing.Size(62, 16);
             this.lnkQQ.TabIndex = 4;
             this.lnkQQ.TabStop = true;
             this.lnkQQ.Text = "286064707";
@@ -151,9 +152,9 @@
             // lnkMSN
             // 
             this.lnkMSN.AutoSize = true;
-            this.lnkMSN.Location = new System.Drawing.Point(77, 116);
+            this.lnkMSN.Location = new System.Drawing.Point(90, 143);
             this.lnkMSN.Name = "lnkMSN";
-            this.lnkMSN.Size = new System.Drawing.Size(98, 13);
+            this.lnkMSN.Size = new System.Drawing.Size(107, 16);
             this.lnkMSN.TabIndex = 5;
             this.lnkMSN.TabStop = true;
             this.lnkMSN.Text = "olar.tan@msn.com";
@@ -161,9 +162,9 @@
             // 
             // About
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(296, 249);
+            this.ClientSize = new System.Drawing.Size(345, 307);
             this.Controls.Add(this.lnkMSN);
             this.Controls.Add(this.lnkQQ);
             this.Controls.Add(this.lnkBlog);
@@ -176,8 +177,10 @@
             this.Controls.Add(this.lblQQ);
             this.Controls.Add(this.lblAuthor);
             this.Controls.Add(this.lblCaption);
+            this.Font = new System.Drawing.Font("Microsoft YaHei", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "About";

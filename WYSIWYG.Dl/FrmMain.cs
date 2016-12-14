@@ -25,8 +25,9 @@ namespace WYSIWYG.Dl
         private const string DESC_IMAGES_COUNT = " | 共 {0} 张图片";
         private const string DESC_DOWNLOAD_TOTAL_TIME = " | 下载耗时:{0}";
 
-        private const string MSG_IS_EMPTY = "保存路径或网址不能为空！";
-        private const string MSG_FORMAT_ERROR = "网址格式不对！\n\r请输入完成的网址，如 http://www.taotao.com ";
+        private const string MSG_IS_EMPTY = "请选择保存路径！";
+        private const string URL_IS_EMPTY = "请输入解析地址！";
+        private const string MSG_FORMAT_ERROR = "网址格式不对！\n\r请输入完成的网址,如 http://www.taotao.com ";
 
         private const string STATUS_ANALYSIS = "分析网站";
         private const string STATUS_QUEUE = "进入队列";
@@ -50,11 +51,15 @@ namespace WYSIWYG.Dl
         /// </summary>
         public FrmMain()
         {
+
             InitializeComponent();
             Control.CheckForIllegalCrossThreadCalls = false;
             var dir = Path.Combine(Environment.CurrentDirectory, DateTime.Now.ToString("yyyyMMddHHmmss"));
             if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
             txtSaveDir.Text = dir;
+            txtRegex.Text = LINK_PATTERN;
+            txtRegex.ReadOnly = true;
+            WinAPI.SendMessage(txtUrl.Handle, WinAPI.EM_SETCUEBANNER, 0, "例如:http://www.taotao.com");
         }
 
         #endregion 构造
@@ -81,9 +86,15 @@ namespace WYSIWYG.Dl
         /// <param name="e"></param>
         private void btnDownload_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(txtSaveDir.Text.Trim()) || string.IsNullOrEmpty(txtUrl.Text.Trim()))
+            if (string.IsNullOrEmpty(txtSaveDir.Text.Trim()))
             {
                 MessageBox.Show(MSG_IS_EMPTY);
+                return;
+            }
+
+            if (string.IsNullOrEmpty(txtUrl.Text.Trim()))
+            {
+                MessageBox.Show(URL_IS_EMPTY);
                 return;
             }
 
@@ -213,22 +224,28 @@ namespace WYSIWYG.Dl
         /// <returns></returns>
         protected List<Uri> FetchImgUris(string url)
         {
-            StringBuilder sourceCSS = new StringBuilder();
+            var sourceCSS = new StringBuilder();
             List<Uri> list = new List<Uri>();
             using (WebClient client = new WebClient())
             {
                 _basicUri = new Uri(url);
                 string sourceHtml = client.DownloadString(_basicUri);
                 sourceCSS.Append(sourceHtml);
+
                 Regex regex = new Regex(LINK_PATTERN, RegexOptions.IgnoreCase);
                 MatchCollection collection = regex.Matches(sourceHtml);
                 if (collection == null) return null;
                 string extension = string.Empty;
                 string link = string.Empty;
+                Uri uri = null;
                 foreach (Match match in collection)
                 {
                     link = match.Groups["link"].Value;
-                    lvLog.Items.Add(new ListViewItem(new string[] { new Uri(_basicUri, link).AbsoluteUri, DateTime.Now.ToString(TIME_FORMAT), STATUS_ANALYSIS, string.Empty, link.Contains(".") ? link.Substring(link.LastIndexOf('.')) : string.Empty }));
+                    if (!Uri.TryCreate(_basicUri, link, out uri)) continue;
+
+                    lvLog.Items.Add(new ListViewItem(new string[] { uri.AbsoluteUri,
+                        DateTime.Now.ToString(TIME_FORMAT), STATUS_ANALYSIS,
+                        string.Empty, link.Contains(".") ? link.Substring(link.LastIndexOf('.')) : string.Empty }));
 
                     if (!link.Contains(".")) continue;
                     extension = link.Substring(link.LastIndexOf('.'));
@@ -240,18 +257,40 @@ namespace WYSIWYG.Dl
                         case ".ICO":
                         case ".SVG":
                         case ".JPEG":
-                            list.Add(new Uri(_basicUri, link));
+                            list.Add(uri);
                             break;
                         case ".CSS":
+                            sourceCSS.Append(client.DownloadString(uri));
+                            break;
                         default:
-                            sourceCSS.Append(client.DownloadString(new Uri(_basicUri, link)));
                             break;
                     }
                 }
             }
             list.AddRange(FetchBgImgUris(sourceCSS.ToString()));
-
+            DecodeBase64Img(sourceCSS.ToString());
             return list;
+        }
+
+        private void DecodeBase64Img(string input)
+        {
+            new Thread(() =>
+            {
+                var regex = new Regex(@"data:(?<mime>[\w/\-\.]+);(?<encoding>\w+),(?<data>.*)", RegexOptions.Compiled);
+                MatchCollection collection = regex.Matches(input);
+                if (collection == null) return;
+                {
+                    foreach (Match match in collection)
+                    {
+                        var mime = match.Groups["mime"].Value;
+                        var encoding = match.Groups["encoding"].Value;
+                        var data = match.Groups["data"].Value;
+                        var filePath = Path.Combine("", Guid.NewGuid().ToString("N") + MimeExtensionHelper.GetExtension(mime));
+                        File.WriteAllBytes(filePath, Convert.FromBase64String(data));
+                    }
+                }
+            }).Start();
+
         }
 
         /// <summary>
@@ -266,11 +305,16 @@ namespace WYSIWYG.Dl
             MatchCollection collection = regex.Matches(css);
             if (collection == null) return null;
             string url = string.Empty;
+            Uri uri = null;
             foreach (Match match in collection)
             {
                 url = match.Groups["url"].Value;
-                list.Add(new Uri(_basicUri, url));
-                lvLog.Items.Add(new ListViewItem(new string[] { new Uri(_basicUri, url).AbsoluteUri, DateTime.Now.ToString(TIME_FORMAT), STATUS_QUEUE, string.Empty, url.Substring(url.LastIndexOf('.')) }));
+                if (!Uri.TryCreate(_basicUri, url, out uri)) continue;
+                list.Add(uri);
+                lvLog.Items.Add(new ListViewItem(new string[] {uri.AbsoluteUri,
+                    DateTime.Now.ToString(TIME_FORMAT),
+                    STATUS_QUEUE, string.Empty,
+                    Path.GetExtension(url)}));
             }
             return list;
         }

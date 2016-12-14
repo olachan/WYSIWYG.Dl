@@ -52,7 +52,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Msxml, Version=6.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
@@ -68,7 +67,7 @@
       <DependentUpon>About.cs</DependentUpon>
     </Compile>
     <Compile Include="Core\Icon.cs" />
-    <Compile Include="Core\Util.cs" />
+    <Compile Include="Core\MimeExtensionHelper.cs" />
     <Compile Include="Core\WinAPI.cs" />
     <Compile Include="FrmMain.cs">
       <SubType>Form</SubType>

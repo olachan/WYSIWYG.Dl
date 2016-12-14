@@ -10,7 +10,7 @@
         /// <summary>
         /// 清理所有正在使用的资源。
         /// </summary>
-        /// <param name="disposing">如果应释放托管资源，为 true；否则为 false。</param>
+        /// <param name="disposing">如果应释放托管资源,为 true；否则为 false。</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -58,23 +58,26 @@
             // 
             // txtUrl
             // 
-            this.txtUrl.Location = new System.Drawing.Point(87, 106);
+            this.txtUrl.Location = new System.Drawing.Point(101, 141);
+            this.txtUrl.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txtUrl.Name = "txtUrl";
-            this.txtUrl.Size = new System.Drawing.Size(273, 21);
-            this.txtUrl.TabIndex = 0;
+            this.txtUrl.Size = new System.Drawing.Size(318, 22);
+            this.txtUrl.TabIndex = 1;
             // 
             // txtSaveDir
             // 
-            this.txtSaveDir.Location = new System.Drawing.Point(87, 41);
+            this.txtSaveDir.Location = new System.Drawing.Point(101, 55);
+            this.txtSaveDir.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txtSaveDir.Name = "txtSaveDir";
-            this.txtSaveDir.Size = new System.Drawing.Size(273, 21);
-            this.txtSaveDir.TabIndex = 1;
+            this.txtSaveDir.Size = new System.Drawing.Size(318, 22);
+            this.txtSaveDir.TabIndex = 0;
             // 
             // btnBroswer
             // 
-            this.btnBroswer.Location = new System.Drawing.Point(376, 40);
+            this.btnBroswer.Location = new System.Drawing.Point(439, 54);
+            this.btnBroswer.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnBroswer.Name = "btnBroswer";
-            this.btnBroswer.Size = new System.Drawing.Size(75, 21);
+            this.btnBroswer.Size = new System.Drawing.Size(87, 22);
             this.btnBroswer.TabIndex = 3;
             this.btnBroswer.Text = "输出路径";
             this.btnBroswer.UseVisualStyleBackColor = true;
@@ -82,37 +85,38 @@
             // 
             // txtRegex
             // 
-            this.txtRegex.Location = new System.Drawing.Point(87, 70);
+            this.txtRegex.Location = new System.Drawing.Point(101, 93);
+            this.txtRegex.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txtRegex.Name = "txtRegex";
-            this.txtRegex.Size = new System.Drawing.Size(273, 21);
+            this.txtRegex.Size = new System.Drawing.Size(318, 22);
             this.txtRegex.TabIndex = 4;
             // 
             // labUrl
             // 
             this.labUrl.AutoSize = true;
-            this.labUrl.Location = new System.Drawing.Point(10, 109);
+            this.labUrl.Location = new System.Drawing.Point(12, 145);
             this.labUrl.Name = "labUrl";
-            this.labUrl.Size = new System.Drawing.Size(65, 12);
+            this.labUrl.Size = new System.Drawing.Size(30, 16);
             this.labUrl.TabIndex = 5;
-            this.labUrl.Text = "抓取地址：";
+            this.labUrl.Text = "解析地址";
             // 
             // labRegex
             // 
             this.labRegex.AutoSize = true;
-            this.labRegex.Location = new System.Drawing.Point(11, 72);
+            this.labRegex.Location = new System.Drawing.Point(13, 96);
             this.labRegex.Name = "labRegex";
-            this.labRegex.Size = new System.Drawing.Size(65, 12);
+            this.labRegex.Size = new System.Drawing.Size(52, 16);
             this.labRegex.TabIndex = 6;
-            this.labRegex.Text = "定义正则：";
+            this.labRegex.Text = "定义正则";
             // 
             // labSaveDir
             // 
             this.labSaveDir.AutoSize = true;
-            this.labSaveDir.Location = new System.Drawing.Point(11, 43);
+            this.labSaveDir.Location = new System.Drawing.Point(13, 57);
             this.labSaveDir.Name = "labSaveDir";
-            this.labSaveDir.Size = new System.Drawing.Size(65, 12);
+            this.labSaveDir.Size = new System.Drawing.Size(52, 16);
             this.labSaveDir.TabIndex = 7;
-            this.labSaveDir.Text = "保存路径：";
+            this.labSaveDir.Text = "保存路径";
             // 
             // ssProcess
             // 
@@ -121,9 +125,10 @@
             this.tsslTime,
             this.tsslCount,
             this.tsslTotalTime});
-            this.ssProcess.Location = new System.Drawing.Point(0, 517);
+            this.ssProcess.Location = new System.Drawing.Point(0, 697);
             this.ssProcess.Name = "ssProcess";
-            this.ssProcess.Size = new System.Drawing.Size(478, 22);
+            this.ssProcess.Padding = new System.Windows.Forms.Padding(1, 0, 16, 0);
+            this.ssProcess.Size = new System.Drawing.Size(558, 22);
             this.ssProcess.TabIndex = 8;
             // 
             // tsslStatus
@@ -148,9 +153,10 @@
             // 
             // btnDownload
             // 
-            this.btnDownload.Location = new System.Drawing.Point(376, 105);
+            this.btnDownload.Location = new System.Drawing.Point(439, 140);
+            this.btnDownload.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnDownload.Name = "btnDownload";
-            this.btnDownload.Size = new System.Drawing.Size(75, 21);
+            this.btnDownload.Size = new System.Drawing.Size(87, 22);
             this.btnDownload.TabIndex = 9;
             this.btnDownload.Text = "下载图片";
             this.btnDownload.UseVisualStyleBackColor = true;
@@ -165,7 +171,7 @@
             this.tsSystem.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
             this.tsSystem.Location = new System.Drawing.Point(0, 0);
             this.tsSystem.Name = "tsSystem";
-            this.tsSystem.Size = new System.Drawing.Size(478, 23);
+            this.tsSystem.Size = new System.Drawing.Size(558, 23);
             this.tsSystem.TabIndex = 10;
             // 
             // tsddbSetting
@@ -203,9 +209,10 @@
             this.chFormat});
             this.lvLog.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.lvLog.GridLines = true;
-            this.lvLog.Location = new System.Drawing.Point(0, 153);
+            this.lvLog.Location = new System.Drawing.Point(0, 213);
+            this.lvLog.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.lvLog.Name = "lvLog";
-            this.lvLog.Size = new System.Drawing.Size(478, 364);
+            this.lvLog.Size = new System.Drawing.Size(558, 484);
             this.lvLog.TabIndex = 11;
             this.lvLog.UseCompatibleStateImageBehavior = false;
             this.lvLog.View = System.Windows.Forms.View.Details;
@@ -213,7 +220,7 @@
             // 
             // chURL
             // 
-            this.chURL.Text = "地址";
+            this.chURL.Text = "URL";
             this.chURL.Width = 36;
             // 
             // chTime
@@ -238,9 +245,9 @@
             // 
             // FrmMain
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(478, 539);
+            this.ClientSize = new System.Drawing.Size(558, 719);
             this.Controls.Add(this.lvLog);
             this.Controls.Add(this.tsSystem);
             this.Controls.Add(this.btnDownload);
@@ -252,8 +259,10 @@
             this.Controls.Add(this.txtSaveDir);
             this.Controls.Add(this.txtUrl);
             this.Controls.Add(this.ssProcess);
+            this.Font = new System.Drawing.Font("Microsoft YaHei", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.MaximizeBox = false;
             this.Name = "FrmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

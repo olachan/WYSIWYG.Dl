@@ -1,15 +1,21 @@
-﻿namespace WYSIWYG.Dl.Core
+﻿using System;
+using System.Runtime.InteropServices;
+
+namespace WYSIWYG.Dl.Core
 {
     public class WinAPI
     {
-        #region Win API
 
-        [System.Runtime.InteropServices.DllImport("Kernel32.dll")]
+        [DllImport("Kernel32.dll")]
         public static extern bool QueryPerformanceCounter(ref long count);
 
-        [System.Runtime.InteropServices.DllImport("Kernel32.dll")]
+        [DllImport("Kernel32.dll")]
         public static extern bool QueryPerformanceFrequency(ref long count);
 
-        #endregion Win API
+        public const int EM_SETCUEBANNER = 0x1501;
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        public static extern Int32 SendMessage(IntPtr hWnd, int msg, int wParam, [MarshalAs(UnmanagedType.LPWStr)]string lParam);
+
     }
 }
