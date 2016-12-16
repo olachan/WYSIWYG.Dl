@@ -52,51 +52,52 @@
             this.chStatus = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.chSite = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.chFormat = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.webBrowser = new System.Windows.Forms.WebBrowser();
             this.ssProcess.SuspendLayout();
             this.tsSystem.SuspendLayout();
             this.SuspendLayout();
             // 
             // txtUrl
             // 
-            this.txtUrl.Location = new System.Drawing.Point(101, 141);
+            this.txtUrl.Location = new System.Drawing.Point(87, 135);
             this.txtUrl.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txtUrl.Name = "txtUrl";
-            this.txtUrl.Size = new System.Drawing.Size(318, 22);
+            this.txtUrl.Size = new System.Drawing.Size(758, 22);
             this.txtUrl.TabIndex = 1;
             // 
             // txtSaveDir
             // 
-            this.txtSaveDir.Location = new System.Drawing.Point(101, 55);
+            this.txtSaveDir.Location = new System.Drawing.Point(87, 55);
             this.txtSaveDir.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txtSaveDir.Name = "txtSaveDir";
-            this.txtSaveDir.Size = new System.Drawing.Size(318, 22);
+            this.txtSaveDir.Size = new System.Drawing.Size(758, 22);
             this.txtSaveDir.TabIndex = 0;
             // 
             // btnBroswer
             // 
-            this.btnBroswer.Location = new System.Drawing.Point(439, 54);
+            this.btnBroswer.Location = new System.Drawing.Point(882, 54);
             this.btnBroswer.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnBroswer.Name = "btnBroswer";
             this.btnBroswer.Size = new System.Drawing.Size(87, 22);
             this.btnBroswer.TabIndex = 3;
-            this.btnBroswer.Text = "输出路径";
+            this.btnBroswer.Text = "打开";
             this.btnBroswer.UseVisualStyleBackColor = true;
             this.btnBroswer.Click += new System.EventHandler(this.btnBroswer_Click);
             // 
             // txtRegex
             // 
-            this.txtRegex.Location = new System.Drawing.Point(101, 93);
+            this.txtRegex.Location = new System.Drawing.Point(87, 93);
             this.txtRegex.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txtRegex.Name = "txtRegex";
-            this.txtRegex.Size = new System.Drawing.Size(318, 22);
+            this.txtRegex.Size = new System.Drawing.Size(758, 22);
             this.txtRegex.TabIndex = 4;
             // 
             // labUrl
             // 
             this.labUrl.AutoSize = true;
-            this.labUrl.Location = new System.Drawing.Point(12, 145);
+            this.labUrl.Location = new System.Drawing.Point(12, 139);
             this.labUrl.Name = "labUrl";
-            this.labUrl.Size = new System.Drawing.Size(30, 16);
+            this.labUrl.Size = new System.Drawing.Size(52, 16);
             this.labUrl.TabIndex = 5;
             this.labUrl.Text = "解析地址";
             // 
@@ -125,10 +126,10 @@
             this.tsslTime,
             this.tsslCount,
             this.tsslTotalTime});
-            this.ssProcess.Location = new System.Drawing.Point(0, 697);
+            this.ssProcess.Location = new System.Drawing.Point(0, 689);
             this.ssProcess.Name = "ssProcess";
             this.ssProcess.Padding = new System.Windows.Forms.Padding(1, 0, 16, 0);
-            this.ssProcess.Size = new System.Drawing.Size(558, 22);
+            this.ssProcess.Size = new System.Drawing.Size(995, 22);
             this.ssProcess.TabIndex = 8;
             // 
             // tsslStatus
@@ -153,12 +154,12 @@
             // 
             // btnDownload
             // 
-            this.btnDownload.Location = new System.Drawing.Point(439, 140);
+            this.btnDownload.Location = new System.Drawing.Point(882, 134);
             this.btnDownload.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnDownload.Name = "btnDownload";
             this.btnDownload.Size = new System.Drawing.Size(87, 22);
             this.btnDownload.TabIndex = 9;
-            this.btnDownload.Text = "下载图片";
+            this.btnDownload.Text = "下载";
             this.btnDownload.UseVisualStyleBackColor = true;
             this.btnDownload.Click += new System.EventHandler(this.btnDownload_Click);
             // 
@@ -171,7 +172,7 @@
             this.tsSystem.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
             this.tsSystem.Location = new System.Drawing.Point(0, 0);
             this.tsSystem.Name = "tsSystem";
-            this.tsSystem.Size = new System.Drawing.Size(558, 23);
+            this.tsSystem.Size = new System.Drawing.Size(995, 23);
             this.tsSystem.TabIndex = 10;
             // 
             // tsddbSetting
@@ -209,10 +210,10 @@
             this.chFormat});
             this.lvLog.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.lvLog.GridLines = true;
-            this.lvLog.Location = new System.Drawing.Point(0, 213);
+            this.lvLog.Location = new System.Drawing.Point(0, 205);
             this.lvLog.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.lvLog.Name = "lvLog";
-            this.lvLog.Size = new System.Drawing.Size(558, 484);
+            this.lvLog.Size = new System.Drawing.Size(995, 484);
             this.lvLog.TabIndex = 11;
             this.lvLog.UseCompatibleStateImageBehavior = false;
             this.lvLog.View = System.Windows.Forms.View.Details;
@@ -243,11 +244,20 @@
             this.chFormat.Text = "文件类型";
             this.chFormat.Width = 330;
             // 
+            // webBrowser
+            // 
+            this.webBrowser.Location = new System.Drawing.Point(132, 333);
+            this.webBrowser.MinimumSize = new System.Drawing.Size(20, 20);
+            this.webBrowser.Name = "webBrowser";
+            this.webBrowser.Size = new System.Drawing.Size(250, 250);
+            this.webBrowser.TabIndex = 12;
+            this.webBrowser.Visible = false;
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(558, 719);
+            this.ClientSize = new System.Drawing.Size(995, 711);
             this.Controls.Add(this.lvLog);
             this.Controls.Add(this.tsSystem);
             this.Controls.Add(this.btnDownload);
@@ -259,6 +269,7 @@
             this.Controls.Add(this.txtSaveDir);
             this.Controls.Add(this.txtUrl);
             this.Controls.Add(this.ssProcess);
+            this.Controls.Add(this.webBrowser);
             this.Font = new System.Drawing.Font("Microsoft YaHei", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -266,7 +277,7 @@
             this.MaximizeBox = false;
             this.Name = "FrmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "资源WYSIWYG下载器";
+            this.Text = "WYSIWYG资源下载器";
             this.ssProcess.ResumeLayout(false);
             this.ssProcess.PerformLayout();
             this.tsSystem.ResumeLayout(false);
@@ -301,6 +312,7 @@
         private System.Windows.Forms.ToolStripStatusLabel tsslTime;
         private System.Windows.Forms.ToolStripStatusLabel tsslCount;
         private System.Windows.Forms.ToolStripStatusLabel tsslTotalTime;
+        private System.Windows.Forms.WebBrowser webBrowser;
     }
 }
 

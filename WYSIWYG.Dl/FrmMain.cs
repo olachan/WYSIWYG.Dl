@@ -7,6 +7,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
+using System.Threading.Tasks;
+using System.ComponentModel;
+using Microsoft.Win32;
 
 namespace WYSIWYG.Dl
 {
@@ -51,16 +54,18 @@ namespace WYSIWYG.Dl
         /// </summary>
         public FrmMain()
         {
-
+            SetFeatureBrowserEmulation();
             InitializeComponent();
+
             Control.CheckForIllegalCrossThreadCalls = false;
-            var dir = Path.Combine(Environment.CurrentDirectory, DateTime.Now.ToString("yyyyMMddHHmmss"));
-            if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
-            txtSaveDir.Text = dir;
+            txtSaveDir.Text = Environment.CurrentDirectory;
             txtRegex.Text = LINK_PATTERN;
             txtRegex.ReadOnly = true;
-            WinAPI.SendMessage(txtUrl.Handle, WinAPI.EM_SETCUEBANNER, 0, "例如:http://www.taotao.com");
+            WinAPI.SendMessage(txtUrl.Handle, WinAPI.EM_SETCUEBANNER, 0, "例如:http://chenzheng.me");
+
         }
+
+        
 
         #endregion 构造
 
@@ -73,10 +78,11 @@ namespace WYSIWYG.Dl
         /// <param name="e"></param>
         private void btnBroswer_Click(object sender, EventArgs e)
         {
-            using (FolderBrowserDialog fbd = new FolderBrowserDialog())
-            {
-                if (fbd.ShowDialog() == DialogResult.OK) txtSaveDir.Text = fbd.SelectedPath;
-            }
+            System.Diagnostics.Process.Start("explorer.exe", txtSaveDir.Text);
+            //using (FolderBrowserDialog fbd = new FolderBrowserDialog())
+            //{
+            //    if (fbd.ShowDialog() == DialogResult.OK) txtSaveDir.Text = fbd.SelectedPath;
+            //}
         }
 
         /// <summary>
@@ -104,9 +110,13 @@ namespace WYSIWYG.Dl
                 MessageBox.Show(MSG_FORMAT_ERROR);
                 return;
             }
+            _basicUri = new Uri(txtUrl.Text.Trim());
+            var dir = Path.Combine(txtSaveDir.Text, _basicUri.Host);
+            if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
+            txtSaveDir.Text = dir;
 
-            Thread t = new Thread(new ThreadStart(DoWork));
-            t.Start();
+            DoWork();
+
         }
 
         /// <summary>
@@ -158,7 +168,7 @@ namespace WYSIWYG.Dl
         /// <summary>
         /// 分析下载
         /// </summary>
-        private void Run(string url, string savePath)
+        private async void Run(string url, string savePath)
         {
             #region 计时
 
@@ -172,7 +182,7 @@ namespace WYSIWYG.Dl
 
             #endregion 计时
 
-            List<Uri> list = FetchImgUris(url);
+            var list = await FetchImgUris(url);
 
             #region 计时
 
@@ -222,14 +232,18 @@ namespace WYSIWYG.Dl
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
-        protected List<Uri> FetchImgUris(string url)
+        protected async Task<List<Uri>> FetchImgUris(string url)
         {
             var sourceCSS = new StringBuilder();
-            List<Uri> list = new List<Uri>();
-            using (WebClient client = new WebClient())
+            var list = new List<Uri>();
+            using (var client = new WebClient())
             {
-                _basicUri = new Uri(url);
-                string sourceHtml = client.DownloadString(_basicUri);
+                client.Headers.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.18 Safari/537.36");
+
+                var cts = new CancellationTokenSource(10000); // cancel in 10s
+                var sourceHtml = await LoadDynamicPage(url, cts.Token);
+
+                //string sourceHtml = client.DownloadString(_basicUri);
                 sourceCSS.Append(sourceHtml);
 
                 Regex regex = new Regex(LINK_PATTERN, RegexOptions.IgnoreCase);
@@ -247,8 +261,9 @@ namespace WYSIWYG.Dl
                         DateTime.Now.ToString(TIME_FORMAT), STATUS_ANALYSIS,
                         string.Empty, link.Contains(".") ? link.Substring(link.LastIndexOf('.')) : string.Empty }));
 
-                    if (!link.Contains(".")) continue;
-                    extension = link.Substring(link.LastIndexOf('.'));
+                    //if (!link.Contains(".")) continue;
+                    //extension = link.Substring(link.LastIndexOf('.'));
+                    extension = Path.GetExtension(uri.OriginalString);
                     switch (extension.ToUpper())
                     {
                         case ".GIF":
@@ -300,16 +315,33 @@ namespace WYSIWYG.Dl
         /// <param name="css"></param>
         private List<Uri> FetchBgImgUris(string css)
         {
-            List<Uri> list = new List<Uri>();
-            Regex regex = new Regex(BACKGROUND_IMAGE_PATTERN, RegexOptions.IgnoreCase);
+            var list = new List<Uri>();
+            var regex = new Regex(BACKGROUND_IMAGE_PATTERN, RegexOptions.IgnoreCase);
             MatchCollection collection = regex.Matches(css);
             if (collection == null) return null;
             string url = string.Empty;
             Uri uri = null;
+            var extension = string.Empty;
             foreach (Match match in collection)
             {
                 url = match.Groups["url"].Value;
                 if (!Uri.TryCreate(_basicUri, url, out uri)) continue;
+
+                extension = Path.GetExtension(uri.OriginalString);
+                switch (extension.ToUpper())
+                {
+                    case ".GIF":
+                    case ".PNG":
+                    case ".JPG":
+                    case ".ICO":
+                    case ".SVG":
+                    case ".JPEG":
+                        list.Add(uri);
+                        break;
+                    default:
+                        break;
+                }
+
                 list.Add(uri);
                 lvLog.Items.Add(new ListViewItem(new string[] {uri.AbsoluteUri,
                     DateTime.Now.ToString(TIME_FORMAT),
@@ -326,25 +358,93 @@ namespace WYSIWYG.Dl
         /// <param name="saveDir"></param>
         private void DownLoad(List<Uri> list, string saveDir)
         {
-            try
+
+            using (var client = new WebClient())
             {
-                using (var client = new WebClient())
+                client.Headers.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.18 Safari/537.36");
+                FileInfo fi = null;
+                foreach (Uri uri in list)
                 {
-                    client.Headers.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.18 Safari/537.36");
-                    foreach (Uri uri in list)
+                    try
                     {
-                        string savePath = Path.Combine(saveDir, uri.AbsoluteUri.Substring(uri.AbsoluteUri.LastIndexOf('/') + 1));
-                        client.DownloadFile(uri, savePath);
+                        var fileName = string.Empty;
+                        if (uri.Host == _basicUri.Host)
+                            fileName = Path.Combine(saveDir, uri.LocalPath.Substring(1));
+                        else
+                            fileName = Path.Combine(saveDir, uri.Host, uri.LocalPath.Substring(1));
+                        fi = new FileInfo(fileName);
+                        if (!Directory.Exists(fi.DirectoryName)) Directory.CreateDirectory(fi.DirectoryName);
+                        client.DownloadFile(uri, fileName);
                         lvLog.Items.Add(new ListViewItem(new string[] { uri.AbsoluteUri, DateTime.Now.ToString(TIME_FORMAT), STATUS_COMPLETE, string.Empty, uri.AbsoluteUri.Substring(uri.AbsoluteUri.LastIndexOf('.')) }));
                     }
+                    catch (Exception ex)
+                    {
+                        lvLog.Items.Add(new ListViewItem(new string[] { ex.Message, DateTime.Now.ToString(TIME_FORMAT), STATUS_ERROR, string.Empty, ex.StackTrace }));
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                lvLog.Items.Add(new ListViewItem(new string[] { ex.Message, DateTime.Now.ToString(TIME_FORMAT), STATUS_ERROR, string.Empty, ex.StackTrace }));
+
             }
         }
 
         #endregion 同步下载
+
+        // navigate and download 
+        async Task<string> LoadDynamicPage(string url, CancellationToken token)
+        {
+            // navigate and await DocumentCompleted
+            var tcs = new TaskCompletionSource<bool>();
+            WebBrowserDocumentCompletedEventHandler handler = (s, arg) =>
+                tcs.TrySetResult(true);
+
+            using (token.Register(() => tcs.TrySetCanceled(), useSynchronizationContext: true))
+            {
+                this.webBrowser.DocumentCompleted += handler;
+                try
+                {
+                    this.webBrowser.Navigate(url);
+                    await tcs.Task; // wait for DocumentCompleted
+                }
+                finally
+                {
+                    this.webBrowser.DocumentCompleted -= handler;
+                }
+            }
+
+            // get the root element
+            var documentElement = this.webBrowser.Document.GetElementsByTagName("html")[0];
+
+            // poll the current HTML for changes asynchronosly
+            var html = documentElement.OuterHtml;
+            while (true)
+            {
+                // wait asynchronously, this will throw if cancellation requested
+                await Task.Delay(500, token);
+
+                // continue polling if the WebBrowser is still busy
+                if (this.webBrowser.IsBusy)
+                    continue;
+
+                var htmlNow = documentElement.OuterHtml;
+                if (html == htmlNow)
+                    break; // no changes detected, end the poll loop
+
+                html = htmlNow;
+            }
+
+            // consider the page fully rendered 
+            token.ThrowIfCancellationRequested();
+            return html;
+        }
+
+        // enable HTML5 (assuming we're running IE10+)
+        // more info: http://stackoverflow.com/a/18333982/1768303
+        static void SetFeatureBrowserEmulation()
+        {
+            if (LicenseManager.UsageMode != LicenseUsageMode.Runtime)
+                return;
+            var appName = Path.GetFileName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);
+            Registry.SetValue(@"HKEY_CURRENT_USER\Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BROWSER_EMULATION",
+                appName, 10000, RegistryValueKind.DWord);
+        }
     }
 }
